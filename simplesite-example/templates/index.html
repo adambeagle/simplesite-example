@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p class="red">If CSS properly linked, this text should be red.</p>
+<p class="js-add">If main.js is working, this text will be replaced.</p>
+
+<figure>
+  <img src="{{ site_url }}static/images/example-image-1.jpg">
+  <figcaption>Example Image</figcaption>
+</figure>
+{% endblock content %}

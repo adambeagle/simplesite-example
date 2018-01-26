@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{% if page_title %}{{ page_title }} | {% endif %}Simplesite Example Site</title>
+    <meta charset="utf-8">
+    
+    <link rel="stylesheet" href="{{ site_url }}static/css/style.css">
+  </head>
+  
+  <body>
+    <header role="banner">
+      <h1>Simplesite Example Site</h1>
+    </header>
+    
+    <nav role="navigation">
+      Navigation:
+      <ul>
+        <li><a href="{{ site_url }}">Home</a></li>
+        <li><a href="{{ site_url }}some-page/">Some Page</a></li>
+      </ul>
+    </nav>
+    
+    <main>
+      {% if page_title %}
+        <h2>{{ page_title }}</h2>
+      {% endif %}
+      
+      {% block content %}
+      {% endblock content %}
+    </main>
+    <script src="{{ site_url }}static/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+#!/bin/bash
+# Generate the site with simplesiteexample.py, then run a python http.server at 
+# address visible to LAN. This address will be printed by http.server on start.
+#
+# If using VM, may have to bridge connection for this to work.
+#
+# Default port is 8000; a different port can be specified with the -p option.
+#
+# Root of server assumed to be 'output/'. Change with the -d option.
+#
+# Change url setting with -u option (see simplesiteexample.py)
+
+usage() {
+    echo "Usage: $0 [-p port] [-u urls] [-d root]" >&2
+    exit 1
+}
+
+PORT=8000
+URLS=""
+ROOT="output"
+
+while getopts ":p:u:d:" opt; do
+    case $opt in
+        p|P)
+            PORT="$OPTARG"
+            ;;
+        u|U)
+            URLS="$OPTARG"
+            ;;
+        d|D)
+            ROOT="$OPTARG"
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            usage
+            ;;
+    esac
+done
+
+# If URLS is unset or empty string, ignore it
+if [ -z "${URLS}" ]; then
+    python simplesiteexample.py
+else
+    python simplesiteexample.py -u "$URLS"
+fi
+
+# Bind to address visible on LAN, if possible
+INET="$(ifconfig ens33 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')"
+
+cd $ROOT
+python -m http.server "$PORT" --bind "$INET"
